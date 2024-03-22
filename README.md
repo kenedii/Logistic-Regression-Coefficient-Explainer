@@ -1,5 +1,5 @@
 # Logistic-Regression-Coefficient-Explainer
-Explains what the coefficients of a Logistic Regression model represent in terms of log odds and probabilities. (binary classification only)
+Explains what the coefficients of a Logistic Regression model represent in terms of log odds and probabilities. 
 
 **def explain_coefficients(model, columns, target):**
 Explains what the coefficients of a Logistic Regression model represent.
@@ -10,7 +10,9 @@ model: A scikit-learn logistic regression model
 
 columns: Column names for the independent variables (X) [Array]
 
-target: Column name for dependent variable (y) = 1 'String' (e.g. 'malignant')
+target: Column name(s) for dependent variable (y)
+        - Use y=1 for binary classification 'String' (e.g. 'malignant')
+        - Use array for multi-class classification 'Array' (e.g. ['setosa', 'versicolor', 'virginica'])
 
 Returns:
       Dictionary containing probabilities derived from the logodds.
