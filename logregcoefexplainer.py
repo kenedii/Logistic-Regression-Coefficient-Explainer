@@ -9,7 +9,7 @@ def logodds_to_odds(change_in_logodds):
       change_in_logodds: The change in log-odds value (coefficient).
 
   Returns:
-      The increase in odds (as a percentage)
+      The increase in odds (as a percentage of 100)
   """
 
   # Convert change in log-odds to change in odds ratio.
@@ -33,13 +33,26 @@ def explain_coefficients(model, columns, target):
   """
   explanation = {}
 
-  print(f'The logodds of all columns being zero: {model.intercept_[0]}')
-  print(f'The probability of {target} with all columns == 0 is {logodds_to_odds(model.intercept_[0])}%')
-  explanation[f'P({target}) | All columns = 0'] = logodds_to_odds(model.intercept_[0])/100
+  if len(columns) == 1: # Only one independent variable (X)
+    print(f'The logodds of {columns[0]} being zero: {model.intercept_[0]}')
+    print(f'The probability of {target} with {columns[0]} = 0 is {logodds_to_odds(model.intercept_[0])}%')
 
-  for i in range(len(columns)): # Iterates through every feature in the columns array
-    print(f'One unit increment in {columns[i]} will result in {model.coef_[0][i]} change in log odds.')
-    print(f'One unit increment in {columns[i]} increases the probability of {target} by {logodds_to_odds(model.coef_[0][i])}%')
-    explanation[f'+1 {columns[i]} increase P({target}) by'] = logodds_to_odds(model.coef_[0][i])/100
+    explanation[f'P({target}) | {columns[0]} = 0'] = logodds_to_odds(model.intercept_[0])/100
 
-  return explanation
+    print(f'One unit increment in {columns[0]} will result in {model.coef_[0][0]} change in log odds.')
+    print(f'One unit increment in {columns[0]} increases the probability of {target} by {logodds_to_odds(model.coef_[0][0])}%')
+
+    explanation[f'+1 {columns[0]} increase P({target}) by'] = logodds_to_odds(model.coef_[0][i])/100
+    return explanation
+
+  if len(columns) > 1: # Multiple independent variables
+    print(f'The logodds of all columns being zero: {model.intercept_[0]}')
+    print(f'The probability of {target} with all columns == 0 is {logodds_to_odds(model.intercept_[0])}%')
+    explanation[f'P({target}) | All columns = 0'] = logodds_to_odds(model.intercept_[0])/100
+
+    for i in range(len(columns)): # Iterates through every feature in the columns array
+      print(f'One unit increment in {columns[i]} will result in {model.coef_[0][i]} change in log odds.')
+      print(f'One unit increment in {columns[i]} increases the probability of {target} by {logodds_to_odds(model.coef_[0][i])}%')
+      explanation[f'+1 {columns[i]} increase P({target}) by'] = logodds_to_odds(model.coef_[0][i])/100
+
+    return explanation
