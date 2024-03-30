@@ -26,7 +26,9 @@ def explain_coefficients(model, columns, target):
   Args:
       model: A scikit-learn logistic regression model
       columns: Column names for the independent variables (X) [Array]
-      target: Column name for dependent variable (y) = 1 'String' (e.g. 'malignant')
+      target: Column name(s) for dependent variable (y)
+        - Use y=1 for binary classification 'String' (e.g. 'malignant')
+        - Use array for multi-class classification 'Array' (e.g. ['setosa', 'versicolor', 'virginica'])
 
   Returns:
       Dictionary containing probabilities derived from the logodds.
